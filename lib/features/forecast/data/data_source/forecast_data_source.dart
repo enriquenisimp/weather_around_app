@@ -10,7 +10,7 @@ class ForecastDataSource {
   final Dio _dio;
   ForecastDataSource(this._dio);
 
-  Future<Response?> getListCitiesByNameAPi(
+  Future<Response> getListCitiesByNameAPi(
     String cityName,
   ) async {
     try {
@@ -23,7 +23,12 @@ class ForecastDataSource {
       );
     } catch (e) {
       log(e.toString(), level: Level.error.value);
-      return null;
+
+      throw DioException(
+        requestOptions: RequestOptions(),
+        error: e,
+        type: DioExceptionType.unknown,
+      );
     }
   }
 
@@ -40,7 +45,11 @@ class ForecastDataSource {
       );
     } catch (e) {
       log(e.toString(), level: Level.error.value);
-      return null;
+      throw DioException(
+        requestOptions: RequestOptions(),
+        error: e,
+        type: DioExceptionType.unknown,
+      );
     }
   }
 
@@ -57,7 +66,11 @@ class ForecastDataSource {
       );
     } catch (e) {
       log(e.toString(), level: Level.error.value);
-      return null;
+      throw DioException(
+        requestOptions: RequestOptions(),
+        error: e,
+        type: DioExceptionType.unknown,
+      );
     }
   }
 }

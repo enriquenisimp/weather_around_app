@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:weather_around_app/core/data/constants/api_status.dart';
 import 'package:weather_around_app/core/error/failure.dart';
 import 'package:weather_around_app/features/forecast/data/data_source/forecast_data_source.dart';
@@ -31,18 +33,15 @@ class ForecastRepositoryImpl implements ForecastRepository {
           listCitiesEntity,
         );
       } else {
-        return const Left(
-          Failure(
-            "No city were found with that name",
-          ),
+        final apiError = ApiError.fromJson(result.data);
+        return Left(
+          Failure(apiError?.message),
         );
       }
-    } on DioException catch (e) {
-      final apiError = ApiError.fromJson(e.response?.data["error"]);
-      return Left(
-        Failure(
-          apiError.message,
-        ),
+    } catch (e) {
+      log(e.toString(), level: Level.error.value);
+      return const Left(
+        Failure.unknown(),
       );
     }
   }
@@ -65,16 +64,15 @@ class ForecastRepositoryImpl implements ForecastRepository {
           listCitiesEntity,
         );
       } else {
-        return const Left(
-          Failure.unknown(),
+        final apiError = ApiError.fromJson(result.data);
+        return Left(
+          Failure(apiError?.message),
         );
       }
-    } on DioException catch (e) {
-      final apiError = ApiError.fromJson(e.response?.data["error"]);
-      return Left(
-        Failure(
-          apiError.message,
-        ),
+    } catch (e) {
+      log(e.toString(), level: Level.error.value);
+      return const Left(
+        Failure.unknown(),
       );
     }
   }
@@ -98,16 +96,15 @@ class ForecastRepositoryImpl implements ForecastRepository {
           listCitiesEntity,
         );
       } else {
-        return const Left(
-          Failure.unknown(),
+        final apiError = ApiError.fromJson(result.data);
+        return Left(
+          Failure(apiError?.message),
         );
       }
-    } on DioException catch (e) {
-      final apiError = ApiError.fromJson(e.response?.data["error"]);
-      return Left(
-        Failure(
-          apiError.message,
-        ),
+    } catch (e) {
+      log(e.toString(), level: Level.error.value);
+      return const Left(
+        Failure.unknown(),
       );
     }
   }

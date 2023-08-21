@@ -44,7 +44,7 @@ dependencies:
   logger: ^2.0.1
   easy_debounce: ^2.0.3
   intl: ^0.18.1
-
+  mocktail: ^0.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

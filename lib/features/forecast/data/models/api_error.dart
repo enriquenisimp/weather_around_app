@@ -4,8 +4,13 @@ class ApiError {
 
   ApiError(this.code, this.message);
 
-  static ApiError fromJson(Map<String, dynamic> json) => ApiError(
-        json['code'] ?? 1000,
-        json['message'] ?? "Something went wrong",
+  static ApiError? fromJson(Map<String, dynamic>? json) {
+    if (json != null) {
+      return ApiError(
+        json['error']['code'] ?? 1000,
+        json['error']['message'] ?? "Something went wrong",
       );
+    }
+    return null;
+  }
 }
