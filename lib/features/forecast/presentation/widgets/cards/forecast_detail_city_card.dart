@@ -34,7 +34,7 @@ class ForecastDetailCityCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 Text(
-                  DateFormat(DateFormats.ddMMMyyyyhhmm).format(localTime),
+                  DateFormat(DateFormats.ddMMMyyyy).format(localTime),
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
