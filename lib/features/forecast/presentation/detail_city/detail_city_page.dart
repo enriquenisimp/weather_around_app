@@ -7,6 +7,7 @@ import 'package:weather_around_app/core/presentation/theme/theme_utils.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/city_entity.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/current_weather_city_entity.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_city_entity.dart';
+import 'package:weather_around_app/features/forecast/presentation/detail_city/error_detail_view.dart';
 import 'package:weather_around_app/features/forecast/presentation/widgets/cards/forecast_current_weather_card.dart';
 import 'package:weather_around_app/features/forecast/presentation/widgets/cards/forecast_detail_city_card.dart';
 import 'package:weather_around_app/features/forecast/presentation/widgets/cards/weather_box.dart';
@@ -136,6 +137,8 @@ class _DetailCityForecastViewState extends State<DetailCityForecastView> {
                     ],
                   ),
                 );
+              } else if (state.status == BaseStatus.error) {
+                return const ErrorDetailView();
               } else {
                 return const Center(
                   child: CircularProgressIndicator(

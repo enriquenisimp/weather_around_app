@@ -6,6 +6,7 @@ class _AssetsConstants {
 class WeatherConstants {
   static const _imagePath = _AssetsConstants.imagesPath;
   static const weatherNotification = 'weather_notification.svg';
+  static const weatherError = 'page_not_found.svg';
   static getWeatherImage(String asset) {
     return '$_imagePath/$asset';
   }

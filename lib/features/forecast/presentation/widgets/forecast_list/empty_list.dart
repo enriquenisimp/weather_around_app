@@ -23,63 +23,65 @@ class EmptyListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GeoLocationCubit()..determinePosition(),
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: ThemeConstants.dimensionMedium,
-          vertical: ThemeConstants.dimensionLarge,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: ThemeConstants.dimensionMedium,
-          vertical: ThemeConstants.dimensionLarge,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(ThemeConstants.dimensionLarge),
-          color: Colors.white.withOpacity(0.4),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(
-              WeatherConstants.getWeatherImage(
-                WeatherConstants.weatherNotification,
+      child: Center(
+        child: Container(
+          margin: const EdgeInsets.symmetric(
+            horizontal: ThemeConstants.dimensionMedium,
+            vertical: ThemeConstants.dimensionLarge,
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: ThemeConstants.dimensionMedium,
+            vertical: ThemeConstants.dimensionLarge,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(ThemeConstants.dimensionLarge),
+            color: Colors.white.withOpacity(0.4),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                WeatherConstants.getWeatherImage(
+                  WeatherConstants.weatherNotification,
+                ),
+                height: 100,
               ),
-              height: 100,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(
-              subtitle,
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-            BlocBuilder<GeoLocationCubit, GeoLocationState>(
-                builder: (context, state) {
-              if (state.geoStatus == GeoStatus.loading) {
-                return const CircularProgressIndicator();
-              } else if (state.geoStatus == GeoStatus.noLocation) {
-                return Text(state.failure?.message ??
-                    "Something went wrong getting location");
-              } else {
-                return ElevatedButton(
-                  child: const Text('Check your location\'s weather'),
-                  onPressed: () {
-                    if (state.position != null) {
-                      showCurrentLocation(state.position!);
-                    }
-                  },
-                );
-              }
-            })
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.bodyLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+              BlocBuilder<GeoLocationCubit, GeoLocationState>(
+                  builder: (context, state) {
+                if (state.geoStatus == GeoStatus.loading) {
+                  return const CircularProgressIndicator();
+                } else if (state.geoStatus == GeoStatus.noLocation) {
+                  return Text(state.failure?.message ??
+                      "Something went wrong getting location");
+                } else {
+                  return ElevatedButton(
+                    child: const Text('Check your location\'s weather'),
+                    onPressed: () {
+                      if (state.position != null) {
+                        showCurrentLocation(state.position!);
+                      }
+                    },
+                  );
+                }
+              })
+            ],
+          ),
         ),
       ),
     );
