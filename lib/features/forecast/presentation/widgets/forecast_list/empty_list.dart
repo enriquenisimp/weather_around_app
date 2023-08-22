@@ -70,7 +70,7 @@ class EmptyListView extends StatelessWidget {
                     "Something went wrong getting location");
               } else {
                 return ElevatedButton(
-                  child: const Text('Search your location'),
+                  child: const Text('Check your location\'s weather'),
                   onPressed: () {
                     if (state.position != null) {
                       showCurrentLocation(state.position!);
