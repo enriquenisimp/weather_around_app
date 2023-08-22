@@ -1,16 +1,18 @@
 import 'dart:developer';
 
+import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:weather_around_app/features/forecast/data/models/weather_condition_model.dart';
 
-class CurrentWeatherModel {
+class CurrentWeatherModel extends Equatable {
   final int lastUpdatedEpoch;
   final double tempC;
   final int isDay;
   final int cloud;
   final String localTimeString;
   final WeatherConditionModel weatherCondition;
-  CurrentWeatherModel({
+  const CurrentWeatherModel({
     required this.lastUpdatedEpoch,
     required this.localTimeString,
     required this.tempC,
@@ -32,10 +34,20 @@ class CurrentWeatherModel {
 
   DateTime localTimeDate() {
     try {
-      return DateTime.parse(localTimeString);
+      return DateFormat("yyyy-MM-dd H:mm").parse(localTimeString);
     } catch (e) {
       log(localTimeString, level: Level.error.value);
       return DateTime.now();
     }
   }
+
+  @override
+  List<Object?> get props => [
+        lastUpdatedEpoch,
+        localTimeString,
+        tempC,
+        isDay,
+        cloud,
+        weatherCondition,
+      ];
 }

@@ -1,13 +1,15 @@
 import 'dart:developer';
 
+import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:weather_around_app/features/forecast/data/models/weather_condition_model.dart';
 
-class ForecastModel {
+class ForecastModel extends Equatable {
   final Location location;
   final Forecast forecast;
 
-  ForecastModel({
+  const ForecastModel({
     required this.location,
     required this.forecast,
   });
@@ -16,6 +18,9 @@ class ForecastModel {
         location: Location.fromJson(json["location"]),
         forecast: Forecast.fromJson(json["forecast"]),
       );
+
+  @override
+  List<Object> get props => [location, forecast];
 }
 
 enum WindDir { unknown, southWest, west, westSouthWest }
@@ -26,10 +31,10 @@ final windDirValues = EnumValues({
   "WSW": WindDir.west,
 });
 
-class Forecast {
+class Forecast extends Equatable {
   final List<ForecastDay> forecastDay;
 
-  Forecast({
+  const Forecast({
     required this.forecastDay,
   });
 
@@ -40,15 +45,18 @@ class Forecast {
           ),
         ),
       );
+
+  @override
+  List<Object> get props => [forecastDay];
 }
 
-class ForecastDay {
+class ForecastDay extends Equatable {
   final DateTime date;
   final int dateEpoch;
   final Day day;
   final List<Hour> hour;
 
-  ForecastDay({
+  const ForecastDay({
     required this.date,
     required this.dateEpoch,
     required this.day,
@@ -65,9 +73,12 @@ class ForecastDay {
           ),
         ),
       );
+
+  @override
+  List<Object> get props => [date, dateEpoch, day, hour];
 }
 
-class Day {
+class Day extends Equatable {
   final double maxtempC;
   final double maxtempF;
   final double mintempC;
@@ -89,7 +100,7 @@ class Day {
   final WeatherConditionModel condition;
   final double uv;
 
-  Day({
+  const Day({
     required this.maxtempC,
     required this.maxtempF,
     required this.mintempC,
@@ -134,9 +145,33 @@ class Day {
         condition: WeatherConditionModel.fromJson(json["condition"]),
         uv: json["uv"],
       );
+
+  @override
+  List<Object> get props => [
+        maxtempC,
+        maxtempF,
+        mintempC,
+        mintempF,
+        avgtempC,
+        avgtempF,
+        maxwindMph,
+        maxwindKph,
+        totalprecipMm,
+        totalprecipIn,
+        totalsnowCm,
+        avgvisKm,
+        avgvisMiles,
+        avghumidity,
+        dailyWillItRain,
+        dailyChanceOfRain,
+        dailyWillItSnow,
+        dailyChanceOfSnow,
+        condition,
+        uv,
+      ];
 }
 
-class Hour {
+class Hour extends Equatable {
   final int timeEpoch;
   final String time;
   final double tempC;
@@ -171,7 +206,7 @@ class Hour {
   final double gustKph;
   final double uv;
 
-  Hour({
+  const Hour({
     required this.timeEpoch,
     required this.time,
     required this.tempC,
@@ -245,9 +280,46 @@ class Hour {
 
   DateTime get dateTimeOfDay =>
       DateTime.fromMillisecondsSinceEpoch(timeEpoch * 1000);
+
+  @override
+  List<Object?> get props => [
+        timeEpoch,
+        time,
+        tempC,
+        tempF,
+        isDay,
+        condition,
+        windMph,
+        windKph,
+        windDegree,
+        windDir,
+        pressureMb,
+        pressureIn,
+        precipMm,
+        precipIn,
+        humidity,
+        cloud,
+        feelslikeC,
+        feelslikeF,
+        windchillC,
+        windchillF,
+        heatindexC,
+        heatindexF,
+        dewpointC,
+        dewpointF,
+        willItRain,
+        chanceOfRain,
+        willItSnow,
+        chanceOfSnow,
+        visKm,
+        visMiles,
+        gustMph,
+        gustKph,
+        uv,
+      ];
 }
 
-class Location {
+class Location extends Equatable {
   final String name;
   final String region;
   final String country;
@@ -257,7 +329,7 @@ class Location {
   final int localtimeEpoch;
   final String localtime;
 
-  Location({
+  const Location({
     required this.name,
     required this.region,
     required this.country,
@@ -281,12 +353,24 @@ class Location {
 
   DateTime localTimeDate() {
     try {
-      return DateTime.parse(localtime);
+      return DateFormat("yyyy-MM-dd H:mm").parse(localtime);
     } catch (e) {
       log(localtime, level: Level.error.value);
       return DateTime.now();
     }
   }
+
+  @override
+  List<Object?> get props => [
+        name,
+        region,
+        country,
+        lat,
+        lon,
+        tzId,
+        localtimeEpoch,
+        localtime,
+      ];
 }
 
 class EnumValues<T> {

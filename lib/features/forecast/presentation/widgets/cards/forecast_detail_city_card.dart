@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_around_app/core/data/constants/common_constants.dart';
+import 'package:weather_around_app/core/presentation/theme/theme_constants.dart';
 import 'package:weather_around_app/core/presentation/theme/theme_utils.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_city_entity.dart';
 
@@ -17,15 +18,16 @@ class ForecastDetailCityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15),
+      margin: const EdgeInsets.symmetric(
+          horizontal: ThemeConstants.dimensionMedium),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(ThemeConstants.dimensionLarge),
       ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(ThemeConstants.dimensionMedium),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -45,16 +47,20 @@ class ForecastDetailCityCard extends StatelessWidget {
             child: ListView.builder(
                 itemCount: forecastByHourList.length,
                 controller: controller,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: ThemeConstants.dimensionSmall,
+                  vertical: ThemeConstants.dimensionSmall,
+                ),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   final forecastByHour = forecastByHourList[index];
 
                   return Container(
                     width: 80,
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: ThemeConstants.dimensionExtraSmall),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: ThemeConstants.dimensionSmall),
                     decoration: BoxDecoration(
                       color: isCurrentTime(
                         forecastByHour.hourOfTheDay,
@@ -72,12 +78,13 @@ class ForecastDetailCityCard extends StatelessWidget {
                                   forecastByHour.periodOfDay),
                               width: 2)
                           : null,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius:
+                          BorderRadius.circular(ThemeConstants.dimensionLarge),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text("${forecastByHour.temperature}°C",
+                        Text("${forecastByHour.temperature.round()}°",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,

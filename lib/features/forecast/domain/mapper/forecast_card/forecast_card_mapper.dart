@@ -24,7 +24,7 @@ class ForecastMapper {
 
   static CurrentWeatherCityEntity fromCurrentWeatherModelToEntity(
       CurrentWeatherModel currentWeatherModel) {
-    final periodOfDay = _calculatePeriodOfDay(
+    final periodOfDay = PeriodOfDay.calculateByHour(
       currentWeatherModel.isDay,
       currentWeatherModel.localTimeDate(),
     );
@@ -38,19 +38,5 @@ class ForecastMapper {
         iconUrl: currentWeatherModel.weatherCondition.iconUrl,
       ),
     );
-  }
-
-  static PeriodOfDay _calculatePeriodOfDay(int isDay, DateTime dateTime) {
-    if (isDay == 0) return PeriodOfDay.night;
-
-    if (dateTime.hour < 11) {
-      return PeriodOfDay.morning;
-    }
-
-    if (dateTime.hour < 16) {
-      return PeriodOfDay.afternoon;
-    }
-
-    return PeriodOfDay.evening;
   }
 }

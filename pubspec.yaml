@@ -45,6 +45,8 @@ dependencies:
   easy_debounce: ^2.0.3
   intl: ^0.18.1
   mocktail: ^0.3.0
+  flutter_svg: ^1.1.6
+  bloc_test: ^9.1.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -70,9 +72,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-#  assets:
-#    - assets/icons/weather/day/
-#    - assets/icons/weather/night/
+  assets:
+    - assets/images/
+    - assets/mocks/
 #    - assets/conditions/
 
   # An image asset can refer to one or more resolution-specific "variants", see

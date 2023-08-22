@@ -1,9 +1,11 @@
+import 'package:equatable/equatable.dart';
+
 import 'city_model.dart';
 
-class ListCitiesModel {
+class ListCitiesModel extends Equatable {
   final List<CityModel> cities;
 
-  ListCitiesModel(this.cities);
+  const ListCitiesModel(this.cities);
 
   factory ListCitiesModel.fromJson(List<dynamic> listCitiesJson) {
     final cities = <CityModel>[];
@@ -16,4 +18,7 @@ class ListCitiesModel {
     }
     return ListCitiesModel(cities);
   }
+
+  @override
+  List<Object?> get props => [cities];
 }

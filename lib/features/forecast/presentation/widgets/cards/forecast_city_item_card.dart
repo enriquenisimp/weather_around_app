@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_around_app/core/presentation/theme/theme_constants.dart';
 import 'package:weather_around_app/core/presentation/theme/theme_utils.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/city_entity.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/current_weather_city_entity.dart';
@@ -25,9 +26,11 @@ class _ForecastCityItemCardState extends State<ForecastCityItemCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      margin: const EdgeInsets.symmetric(
+          horizontal: ThemeConstants.dimensionSmall,
+          vertical: ThemeConstants.dimensionSmall),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(ThemeConstants.dimensionLarge),
         gradient: LinearGradient(colors: [
           Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
           ThemeUtils.chooseColor(periodOfDay),
@@ -48,8 +51,8 @@ class _ForecastCityItemCardState extends State<ForecastCityItemCard> {
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 10,
+              horizontal: ThemeConstants.dimensionLarge,
+              vertical: ThemeConstants.dimensionSmall,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +72,7 @@ class _ForecastCityItemCardState extends State<ForecastCityItemCard> {
                       Padding(
                         padding: const EdgeInsets.only(
                           top: 3.0,
-                          bottom: 10.0,
+                          bottom: ThemeConstants.dimensionSmall,
                         ),
                         child: Text(
                           '${widget.city.region} ⸱ ${widget.city.country}',

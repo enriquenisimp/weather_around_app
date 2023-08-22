@@ -32,4 +32,20 @@ class ThemeUtils {
         return Colors.indigoAccent.withOpacity(0.5);
     }
   }
+
+  static Color chooseBackgroundEffect(bool isCloudy, PeriodOfDay periodOfDay) {
+    if (periodOfDay.isUnknown) return Colors.transparent;
+    if (isCloudy) return Colors.white.withOpacity(0.6);
+
+    switch (periodOfDay) {
+      case PeriodOfDay.morning:
+        return Colors.yellowAccent.withOpacity(0.3);
+      case PeriodOfDay.afternoon:
+        return Colors.yellow.withOpacity(0.3);
+      case PeriodOfDay.evening:
+        return Colors.orangeAccent.withOpacity(0.3);
+      default:
+        return Colors.indigoAccent.withOpacity(0.3);
+    }
+  }
 }

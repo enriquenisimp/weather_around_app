@@ -15,7 +15,7 @@ class ForecastDataSource {
   ) async {
     try {
       return _dio.get(
-        ApiConstants.citySearch,
+        ApiConstants.getAPiByEndPoint(ApiConstants.citySearch),
         queryParameters: {
           "key": ApiConstants.apiKey,
           "q": cityName,
@@ -32,12 +32,12 @@ class ForecastDataSource {
     }
   }
 
-  Future<Response?> getCurrentWeatherConditionByCityApi(
+  Future<Response> getCurrentWeatherConditionByCityApi(
     String latLong,
   ) async {
     try {
       return _dio.get(
-        ApiConstants.currentWeather,
+        ApiConstants.getAPiByEndPoint(ApiConstants.currentWeather),
         queryParameters: {
           "key": ApiConstants.apiKey,
           "q": latLong,
@@ -53,12 +53,12 @@ class ForecastDataSource {
     }
   }
 
-  Future<Response?> getForecastWeatherDetailByCityApi(
+  Future<Response> getForecastWeatherDetailByCityApi(
     String latLong,
   ) async {
     try {
       return _dio.get(
-        ApiConstants.forecastDetailWeather,
+        ApiConstants.getAPiByEndPoint(ApiConstants.forecastDetailWeather),
         queryParameters: {
           "key": ApiConstants.apiKey,
           "q": latLong,

@@ -9,7 +9,7 @@ class SearchBar extends StatelessWidget {
     return TextField(
       onChanged: onSearch,
       decoration: const InputDecoration(
-        hintText: 'Search...',
+        hintText: 'Search by city...',
         prefixIcon: Icon(Icons.search),
       ),
     );

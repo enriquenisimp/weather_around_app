@@ -42,7 +42,7 @@ class WeatherAroundAppTheme {
       textTheme: const TextTheme(
         displayLarge: TextStyle(
           color: Colors.white,
-          fontSize: 36.0,
+          fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
         displaySmall: TextStyle(

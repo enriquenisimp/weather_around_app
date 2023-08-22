@@ -17,13 +17,36 @@ class ForecastDetailCityMapper {
       averageTemperature: forecastModel.forecast.forecastDay.first.day.avgtempC,
       minTemperature: forecastModel.forecast.forecastDay.first.day.mintempC,
       localTime: forecastModel.location.localTimeDate(),
+      forecastDetailDay: fromForecastDayModelToEntity(
+          forecastModel.forecast.forecastDay.first.day),
+    );
+  }
+
+  static fromForecastDayModelToEntity(Day day) {
+    return ForecastDetailDay(
+      maxTempC: day.maxtempC,
+      minTempC: day.mintempC,
+      avgTempC: day.avgtempC,
+      maxWindKph: day.maxwindKph,
+      totalPrecipitationMm: day.totalprecipMm,
+      avgHumidity: day.avghumidity,
+      dailyWillItRain: day.dailyWillItRain,
+      dailyChanceOfRain: day.dailyChanceOfRain,
+      dailyWillItSnow: day.dailyChanceOfSnow,
+      dailyChanceOfSnow: day.dailyChanceOfSnow,
+      condition: WeatherConditionsEntity(
+        description: day.condition.description,
+        iconUrl: day.condition.iconUrl,
+      ),
+      uv: day.uv,
     );
   }
 
   static fromForecastByHourModelToEntity(Hour forecastByHour) {
     return ForecastDetailByHour(
       hourOfTheDay: forecastByHour.dateTimeOfDay.hour,
-      periodOfDay: PeriodOfDay.getFromHour(forecastByHour.dateTimeOfDay.hour),
+      periodOfDay: PeriodOfDay.calculateByHour(
+          forecastByHour.isDay, forecastByHour.dateTimeOfDay),
       temperature: forecastByHour.tempC,
       weatherConditionsEntity: WeatherConditionsEntity(
         description: forecastByHour.condition.description,
@@ -32,6 +55,24 @@ class ForecastDetailCityMapper {
       windDegree: forecastByHour.windDegree,
       windDir: forecastByHour.windDir ?? WindDir.unknown,
       windKph: forecastByHour.windKph,
+      uv: forecastByHour.uv,
+      chanceOfRain: forecastByHour.chanceOfRain,
+      willItRain: forecastByHour.willItRain,
+      isCloudy: forecastByHour.cloud > 20,
     );
+  }
+
+  static PeriodOfDay _calculatePeriodOfDay(int isDay, DateTime dateTime) {
+    if (isDay == 0) return PeriodOfDay.night;
+
+    if (dateTime.hour < 11) {
+      return PeriodOfDay.morning;
+    }
+
+    if (dateTime.hour < 16) {
+      return PeriodOfDay.afternoon;
+    }
+
+    return PeriodOfDay.evening;
   }
 }

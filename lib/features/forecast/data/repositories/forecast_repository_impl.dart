@@ -20,15 +20,14 @@ class ForecastRepositoryImpl implements ForecastRepository {
   ForecastRepositoryImpl(this._forecastDataSource);
   @override
   Future<Either<Failure, ListCitiesModel>> getListCitiesByNameRepository(
-      String cityName) async {
+    String cityName,
+  ) async {
     try {
       final result = await _forecastDataSource.getListCitiesByNameAPi(cityName);
-      if (result == null) {
-        return const Left(Failure.unknown());
-      }
 
       if (result.statusCode == ApiStatus.success.code) {
         final listCitiesEntity = ListCitiesModel.fromJson(result.data);
+        print(listCitiesEntity);
         return Right(
           listCitiesEntity,
         );
@@ -54,9 +53,6 @@ class ForecastRepositoryImpl implements ForecastRepository {
           await _forecastDataSource.getCurrentWeatherConditionByCityApi(
         latLong,
       );
-      if (result == null) {
-        return const Left(Failure.unknown());
-      }
 
       if (result.statusCode == ApiStatus.success.code) {
         final listCitiesEntity = CurrentWeatherModel.fromJson(result.data);
@@ -86,14 +82,10 @@ class ForecastRepositoryImpl implements ForecastRepository {
         latLong,
       );
 
-      if (result == null) {
-        return const Left(Failure.unknown());
-      }
-
       if (result.statusCode == ApiStatus.success.code) {
-        final listCitiesEntity = ForecastModel.fromJson(result.data);
+        final forecastDetails = ForecastModel.fromJson(result.data);
         return Right(
-          listCitiesEntity,
+          forecastDetails,
         );
       } else {
         final apiError = ApiError.fromJson(result.data);

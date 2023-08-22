@@ -1,9 +1,11 @@
-class WeatherConditionModel {
+import 'package:equatable/equatable.dart';
+
+class WeatherConditionModel extends Equatable {
   final int code;
   final String description;
   final String iconUrl;
 
-  WeatherConditionModel({
+  const WeatherConditionModel({
     required this.code,
     required this.description,
     required this.iconUrl,
@@ -20,4 +22,7 @@ class WeatherConditionModel {
       iconUrl: iconUrl,
     );
   }
+
+  @override
+  List<Object?> get props => [code, description, iconUrl];
 }

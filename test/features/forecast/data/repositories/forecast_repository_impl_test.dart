@@ -1,9 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:weather_around_app/core/data/constants/api_constants.dart';
+import 'package:weather_around_app/core/data/constants/assets_constants.dart';
+import 'package:weather_around_app/core/data/utils.dart';
 import 'package:weather_around_app/core/error/failure.dart';
 import 'package:weather_around_app/features/forecast/data/data_source/forecast_data_source.dart';
+import 'package:weather_around_app/features/forecast/data/models/current_weather_model.dart';
+import 'package:weather_around_app/features/forecast/data/models/forecast_model.dart';
 import 'package:weather_around_app/features/forecast/data/models/list_cities_model.dart';
 import 'package:weather_around_app/features/forecast/data/repositories/forecast_repository_impl.dart';
 
@@ -66,83 +72,98 @@ Future<void> main() async {
   });
 
   group("success from APIs", () {
-    final listCitiesJson = [
-      {
-        "id": 315398,
-        "name": "London",
-        "region": "Ontario",
-        "country": "Canada",
-        "lat": 42.98,
-        "lon": -81.25,
-        "url": "london-ontario-canada"
-      }
-    ];
     test(
         'when getListCitiesByNameAPi return real data,'
-        ' the repository should handle the data and encapsulate the data into a model',
+        'the repository should handle the data and encapsulate the data into a model',
         () async {
+      WidgetsFlutterBinding.ensureInitialized();
+
+      final json = await Utils.getJsonFromFile(
+        MockConstants.getMockAPi(
+          ApiConstants.citySearch,
+        ),
+      );
+
       when(() => forecastDataSource.getListCitiesByNameAPi("london"))
-          .thenAnswer((_) => Future.value(Response(
-              data: {listCitiesJson}, requestOptions: RequestOptions())));
+          .thenAnswer(
+        (_) => Future.value(
+          Response(
+            statusCode: 200,
+            data: json,
+            requestOptions: RequestOptions(),
+          ),
+        ),
+      );
 
       final result =
           await forecastRepositoryImpl.getListCitiesByNameRepository("london");
-
-      expect(result, Right(ListCitiesModel.fromJson(listCitiesJson)));
+      expect(
+        result,
+        Right(
+          ListCitiesModel.fromJson(
+            json,
+          ),
+        ),
+      );
     });
 
     test(
-        'when getForecastWeatherDetailByCityApi throw an exception,'
-        ' the repository should catch that exception and return the Failure',
+        'when getForecastWeatherDetailByCityApi return real data ,'
+        'the repository should handle the data and encapsulate the data into a model',
         () async {
-      when(() => forecastDataSource.getForecastWeatherDetailByCityApi("dummy"))
-          .thenThrow(DioException(
-              requestOptions: RequestOptions(),
-              type: DioExceptionType.unknown));
+      WidgetsFlutterBinding.ensureInitialized();
 
-      final result =
-          await forecastRepositoryImpl.getListCitiesByNameRepository("dummy");
+      final json = await Utils.getJsonFromFile(
+        MockConstants.getMockAPi(
+          ApiConstants.forecastDetailWeather,
+        ),
+      );
 
-      expect(result, const Left(Failure.unknown()));
+      when(() => forecastDataSource.getForecastWeatherDetailByCityApi("22,00"))
+          .thenAnswer(
+        (_) => Future.value(
+          Response(
+            statusCode: 200,
+            data: json,
+            requestOptions: RequestOptions(),
+          ),
+        ),
+      );
+
+      final result = await forecastRepositoryImpl
+          .getForecastWeatherDetailByCityRepository("22,00");
+
+      expect(result, Right(ForecastModel.fromJson(json)));
     });
 
     test(
-        'when getCurrentWeatherConditionByCityApi throw an exception,'
-        ' the repository should catch that exception and return the Failure',
+        'when getCurrentWeatherConditionByCityApi return real data,'
+        ' the repository should handle the data and encapsulate the data into a model',
         () async {
+      WidgetsFlutterBinding.ensureInitialized();
+
+      final json = await Utils.getJsonFromFile(
+        MockConstants.getMockAPi(
+          ApiConstants.currentWeather,
+        ),
+      );
+
       when(() =>
-              forecastDataSource.getCurrentWeatherConditionByCityApi("dummy"))
-          .thenThrow(DioException(
-              requestOptions: RequestOptions(),
-              type: DioExceptionType.unknown));
+              forecastDataSource.getCurrentWeatherConditionByCityApi("22,00"))
+          .thenAnswer(
+        (_) => Future.value(
+          Response(
+            statusCode: 200,
+            data: json,
+            requestOptions: RequestOptions(),
+          ),
+        ),
+      );
 
-      final result =
-          await forecastRepositoryImpl.getListCitiesByNameRepository("dummy");
+      final result = await forecastRepositoryImpl
+          .getCurrentWeatherConditionByCityRepository("22,00");
 
-      expect(result, const Left(Failure.unknown()));
+      expect(result, Right(CurrentWeatherModel.fromJson(json)));
     });
   });
-
-  //   test(
-  //       'getPropertiesListRemote should return a PropertiesListWrapperModel,'
-  //       ' the repository should got it and return a Right(SearchProperties)',
-  //       () async {
-  //     when(() => propertiesRemoteDataSource.getPropertiesListRemote(any()))
-  //         .thenAnswer(
-  //       (i) => Future.value(
-  //         const PropertiesListWrapperModel(
-  //           data: PropertiesListData(
-  //             body: PropertiesListBody(
-  //               searchProperties: SearchProperties(totalCount: 0, results: []),
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //     );
-  //
-  //     final result = await propertiesRepository.getListPropertiesRepository({});
-  //
-  //     expect(result, const Right(SearchProperties(totalCount: 0, results: [])));
-  //   });
-  // }
 }

@@ -1,4 +1,6 @@
-class CityModel {
+import 'package:equatable/equatable.dart';
+
+class CityModel extends Equatable {
   final int id;
   final String name;
   final String region;
@@ -40,4 +42,15 @@ class CityModel {
       return null;
     }
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        region,
+        country,
+        latitude,
+        longitude,
+        url,
+      ];
 }

@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_around_app/core/di/injection.dart';
 import 'package:weather_around_app/core/presentation/bloc_status.dart';
+import 'package:weather_around_app/core/presentation/theme/theme_constants.dart';
 import 'package:weather_around_app/core/presentation/theme/theme_utils.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/city_entity.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/current_weather_city_entity.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_city_entity.dart';
+import 'package:weather_around_app/features/forecast/presentation/widgets/cards/forecast_current_weather_card.dart';
 import 'package:weather_around_app/features/forecast/presentation/widgets/cards/forecast_detail_city_card.dart';
+import 'package:weather_around_app/features/forecast/presentation/widgets/cards/weather_box.dart';
+import 'package:weather_around_app/features/forecast/presentation/widgets/headers/forecast_detail_header.dart';
 
 import '../../domain/usecases/get_forecast_day_weather_by_city_usecase.dart';
 import 'bloc/forecast_weather_detail_cubit.dart';
@@ -60,15 +64,15 @@ class _DetailCityForecastViewState extends State<DetailCityForecastView> {
           listener: (context, state) async {
             if (state.status == BaseStatus.success) {
               if (state.forecastDetail != null) {
+                final index = getIndexByHour(
+                    state.forecastDetail!.localTime.hour,
+                    state.forecastDetail!.forecastByHourList);
                 await Future.delayed(const Duration(milliseconds: 400));
                 setState(() {
-                  periodOfDay = PeriodOfDay.getFromHour(
-                      state.forecastDetail!.localTime.hour);
+                  periodOfDay = state
+                      .forecastDetail!.forecastByHourList[index].periodOfDay;
                 });
-                controller.animateTo(
-                    getIndexByHour(state.forecastDetail!.localTime.hour,
-                            state.forecastDetail!.forecastByHourList) *
-                        90,
+                controller.animateTo(index * 90,
                     duration: const Duration(milliseconds: 600),
                     curve: Curves.linearToEaseOut);
               }
@@ -80,8 +84,6 @@ class _DetailCityForecastViewState extends State<DetailCityForecastView> {
               if (state.status == BaseStatus.success &&
                   state.forecastDetail != null) {
                 final detail = state.forecastDetail!;
-                final currentWeather = detail.forecastByHourList[getIndexByHour(
-                    detail.localTime.hour, detail.forecastByHourList)];
 
                 return SingleChildScrollView(
                   child: Column(
@@ -89,62 +91,47 @@ class _DetailCityForecastViewState extends State<DetailCityForecastView> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 20),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "${currentWeather.temperature}°C",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge,
-                                  ),
-                                  Image.network(currentWeather
-                                      .weatherConditionsEntity.iconUrl),
-                                  Text(
-                                    currentWeather
-                                        .weatherConditionsEntity.description,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Text(
-                              widget.city.name,
-                              style: Theme.of(context).textTheme.displayLarge,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              "${widget.city.region} ${widget.city.country}",
-                              style: Theme.of(context).textTheme.displaySmall,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text(widget.city.country),
-                          ],
-                        ),
+                      ForecastDetailHeader(
+                        forecastDetail: detail,
+                        city: widget.city,
                       ),
-                      const SizedBox(
-                        height: 20,
+                      ForecastCurrentWeatherCard(
+                        forecastDetail: detail,
+                        forecastDetailDay: detail.forecastDetailDay,
                       ),
                       ForecastDetailCityCard(
                         controller: controller,
                         forecastByHourList: detail.forecastByHourList,
                         localTime: detail.localTime,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: ThemeConstants.dimensionSmall),
+                        child: IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: WeatherBox(
+                                  icon: Icons.water,
+                                  title: "Humidity",
+                                  value:
+                                      "${detail.forecastDetailDay.avgHumidity}",
+                                  units: '%',
+                                ),
+                              ),
+                              Expanded(
+                                child: WeatherBox(
+                                  icon: Icons.water_drop_outlined,
+                                  title: "Precipitation",
+                                  value:
+                                      "${detail.forecastDetailDay.totalPrecipitationMm}",
+                                  units: ' mm\nin the last 24h',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       )
                     ],
                   ),

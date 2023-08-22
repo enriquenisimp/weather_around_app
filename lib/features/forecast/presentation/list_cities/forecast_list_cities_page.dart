@@ -91,9 +91,7 @@ class ForecastListCitiesView extends StatelessWidget {
   }) {
     switch (state.status) {
       case BaseStatus.empty:
-        return const EmptyListView(
-          text: 'Please introduce the name of a city to check the weather',
-        );
+        return const EmptyListView.empty();
       case BaseStatus.loading:
         return const Center(
           child: CircularProgressIndicator(),
@@ -103,12 +101,15 @@ class ForecastListCitiesView extends StatelessWidget {
           return child;
         } else {
           return const EmptyListView(
-            text: 'No cities found with that name, please try a different one',
+            title: 'No cities found',
+            subtitle:
+                'No cities found with that name, please try a different one',
           );
         }
       default:
         return EmptyListView(
-          text: state.failure?.message ?? 'Something went wrong',
+          title: state.failure?.message ?? 'Something went wrong',
+          subtitle: 'Try again later',
         );
     }
   }
