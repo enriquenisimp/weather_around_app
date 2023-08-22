@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weather_around_app/core/di/injection.dart';
 import 'package:weather_around_app/core/presentation/bloc_status.dart';
 import 'package:weather_around_app/features/forecast/domain/usecases/get_current_weather_by_city_usecase.dart';
@@ -79,6 +80,11 @@ class ForecastListCitiesView extends StatelessWidget {
                 );
               },
             ),
+            showCurrentPosition: (Position position) {
+              print("${position.latitude},${position.longitude}");
+              context.read<ForecastListCitiesCubit>().getCitiesByName(
+                  cityName: "${position.latitude},${position.longitude}");
+            },
           );
         },
       ),
@@ -88,10 +94,13 @@ class ForecastListCitiesView extends StatelessWidget {
   Widget _buildWidgetByStatus({
     required Widget child,
     required ForecastListCitiesState state,
+    required Function(Position position) showCurrentPosition,
   }) {
     switch (state.status) {
       case BaseStatus.empty:
-        return const EmptyListView.empty();
+        return EmptyListView.empty(
+          showCurrentLocation: showCurrentPosition,
+        );
       case BaseStatus.loading:
         return const Center(
           child: CircularProgressIndicator(),
@@ -100,16 +109,18 @@ class ForecastListCitiesView extends StatelessWidget {
         if (state.cities.isNotEmpty) {
           return child;
         } else {
-          return const EmptyListView(
+          return EmptyListView(
             title: 'No cities found',
             subtitle:
                 'No cities found with that name, please try a different one',
+            showCurrentLocation: showCurrentPosition,
           );
         }
       default:
         return EmptyListView(
           title: state.failure?.message ?? 'Something went wrong',
           subtitle: 'Try again later',
+          showCurrentLocation: showCurrentPosition,
         );
     }
   }
