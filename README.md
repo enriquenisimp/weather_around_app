@@ -6,13 +6,13 @@ A example app created for research and practice purposes.
 
 
 
-You will be able to search for a city you are looking for and see a preview of the current weather there.
+You will be able to search for the city you are looking for and see a preview of the current weather there.
 
 <img width="380" alt="Screenshot 2023-08-22 at 14 57 04" src="https://github.com/enriquenisimp/weather_around_app/assets/70170760/6602d3f6-6a54-42b3-8ed3-cc78073c94c5">
 
 
 
-If you want to know more information about the city you can tap on the item and see the forecast for the whole day.
+If you want to know more information about the city, tap on the item of the city that you are interested in and see its forecast for the whole day.
 
 <img width="379" alt="Screenshot 2023-08-22 at 14 57 31" src="https://github.com/enriquenisimp/weather_around_app/assets/70170760/e57cd9d1-aea1-4546-b71e-e73281c2badd">
 
