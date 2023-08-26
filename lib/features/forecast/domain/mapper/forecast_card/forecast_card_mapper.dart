@@ -1,5 +1,6 @@
 import 'package:weather_around_app/features/forecast/data/models/city_model.dart';
 import 'package:weather_around_app/features/forecast/data/models/current_weather_model.dart';
+import 'package:weather_around_app/features/forecast/domain/entities/enums/period_day.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/city_entity.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/current_weather_city_entity.dart';
 

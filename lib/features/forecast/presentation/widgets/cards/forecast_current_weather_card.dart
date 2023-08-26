@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_around_app/core/data/utils.dart';
 import 'package:weather_around_app/core/presentation/theme/theme_constants.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_city_entity.dart';
+import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_day_entity.dart';
 import 'package:weather_around_app/features/forecast/presentation/widgets/horizontal_divider.dart';
 
 class ForecastCurrentWeatherCard extends StatelessWidget {

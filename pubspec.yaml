@@ -48,6 +48,9 @@ dependencies:
   flutter_svg: ^1.1.6
   bloc_test: ^9.1.4
   geolocator: ^10.0.0
+  weather_animation: ^0.0.2
+  animated_digit: ^3.2.3
+  shimmer: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

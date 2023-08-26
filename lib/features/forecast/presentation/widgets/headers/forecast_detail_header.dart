@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weather_around_app/core/presentation/theme/theme_constants.dart';
-import 'package:weather_around_app/core/presentation/theme/theme_utils.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/city_entity.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_city_entity.dart';
+import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_hour.dart';
+import 'package:weather_around_app/features/forecast/presentation/widgets/headers/weather_digit_widget.dart';
 
 class ForecastDetailHeader extends StatelessWidget {
   const ForecastDetailHeader({
@@ -10,12 +11,19 @@ class ForecastDetailHeader extends StatelessWidget {
     required this.forecastDetail,
     required this.city,
   });
-  final ForecastDetailCityEntity forecastDetail;
+  final ForecastDetailCityEntity? forecastDetail;
   final CityEntity city;
+
+  ForecastDetailByHour? get _currentWeather =>
+      forecastDetail?.forecastByHourList[getIndexByHour(
+              forecastDetail?.localTime.hour ?? 0,
+              forecastDetail?.forecastByHourList) ??
+          0];
+
+  int get _temperature => _currentWeather?.temperature.round() ?? 0;
+
   @override
   Widget build(BuildContext context) {
-    final currentWeather = forecastDetail.forecastByHourList[getIndexByHour(
-        forecastDetail.localTime.hour, forecastDetail.forecastByHourList)];
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: ThemeConstants.dimensionMedium),
@@ -28,28 +36,12 @@ class ForecastDetailHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(ThemeConstants.dimensionSmall),
-                  decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                    BoxShadow(
-                      offset: const Offset(2.0, 1.5),
-                      blurRadius: 30.0,
-                      color: ThemeUtils.chooseShadowColor(
-                        currentWeather.isCloudy,
-                        currentWeather.periodOfDay,
-                      ),
-                    )
-                  ]),
-                  child: Image.network(
-                    currentWeather.weatherConditionsEntity.biggerImageSize,
-                  ),
+                WeatherDigitWidget.degrees(
+                  value: _temperature,
+                  style: const TextStyle(fontSize: 60),
                 ),
                 Text(
-                  "${currentWeather.temperature.round()}°",
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                Text(
-                  currentWeather.weatherConditionsEntity.description,
+                  "${_currentWeather?.weatherConditionsEntity.description}",
                   style: Theme.of(context).textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
@@ -60,29 +52,31 @@ class ForecastDetailHeader extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(
                       vertical: ThemeConstants.dimensionExtraSmall),
                   decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.4),
+                      color: Colors.white.withOpacity(0.5),
                       borderRadius:
                           BorderRadius.circular(ThemeConstants.dimensionLarge)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        "H:${forecastDetail.maxTemperature.round()}°",
+                      WeatherDigitWidget.degrees(
+                        value: forecastDetail?.maxTemperature.round(),
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
                             ?.copyWith(fontWeight: FontWeight.w500),
+                        prefix: "H:",
                       ),
                       const SizedBox(
                         width: 5,
                       ),
-                      Text(
-                        "L:${forecastDetail.minTemperature.round()}°",
+                      WeatherDigitWidget.degrees(
+                        value: forecastDetail?.minTemperature.round(),
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
                             ?.copyWith(fontWeight: FontWeight.w500),
+                        prefix: "L:",
                       ),
                     ],
                   ),
@@ -123,9 +117,9 @@ class ForecastDetailHeader extends StatelessWidget {
     );
   }
 
-  int getIndexByHour(int hour, List<ForecastDetailByHour> detailByHour) {
+  int? getIndexByHour(int hour, List<ForecastDetailByHour>? detailByHour) {
     return detailByHour
-        .indexWhere((element) => element.hourOfTheDay == hour)
+        ?.indexWhere((element) => element.hourOfTheDay == hour)
         .abs();
   }
 }

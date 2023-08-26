@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:weather_around_app/features/forecast/domain/entities/enums/period_day.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/current_weather_city_entity.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/params/get_current_weather_by_city_params.dart';
 import 'package:weather_around_app/features/forecast/domain/usecases/get_current_weather_by_city_usecase.dart';

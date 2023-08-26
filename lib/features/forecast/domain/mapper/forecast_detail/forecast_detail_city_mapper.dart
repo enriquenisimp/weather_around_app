@@ -1,6 +1,9 @@
 import 'package:weather_around_app/features/forecast/data/models/forecast_model.dart';
+import 'package:weather_around_app/features/forecast/domain/entities/enums/period_day.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/current_weather_city_entity.dart';
 import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_city_entity.dart';
+import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_day_entity.dart';
+import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_hour.dart';
 
 class ForecastDetailCityMapper {
   static fromForecastModelToEntity(ForecastModel forecastModel) {
@@ -43,6 +46,7 @@ class ForecastDetailCityMapper {
   }
 
   static fromForecastByHourModelToEntity(Hour forecastByHour) {
+    print(forecastByHour);
     return ForecastDetailByHour(
       hourOfTheDay: forecastByHour.dateTimeOfDay.hour,
       periodOfDay: PeriodOfDay.calculateByHour(
@@ -57,8 +61,9 @@ class ForecastDetailCityMapper {
       windKph: forecastByHour.windKph,
       uv: forecastByHour.uv,
       chanceOfRain: forecastByHour.chanceOfRain,
-      willItRain: forecastByHour.willItRain,
-      isCloudy: forecastByHour.cloud > 20,
+      precipitationMM: forecastByHour.precipMm,
+      isCloudy: forecastByHour.cloud > 25,
+      chanceOfSnow: forecastByHour.chanceOfSnow,
     );
   }
 

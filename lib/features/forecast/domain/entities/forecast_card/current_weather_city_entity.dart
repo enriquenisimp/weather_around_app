@@ -1,34 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_around_app/core/data/constants/common_constants.dart';
-
-enum PeriodOfDay {
-  unknown,
-  morning,
-  afternoon,
-  evening,
-  night;
-
-  bool get isUnknown => this == unknown;
-  bool get isMorning => this == morning;
-  bool get isAfternoon => this == afternoon;
-  bool get isEvening => this == evening;
-  bool get isNight => this == night;
-
-  static PeriodOfDay calculateByHour(int isDay, DateTime dateTime) {
-    if (isDay == 0) return PeriodOfDay.night;
-
-    if (dateTime.hour < 11) {
-      return PeriodOfDay.morning;
-    }
-
-    if (dateTime.hour < 16) {
-      return PeriodOfDay.afternoon;
-    }
-
-    return PeriodOfDay.evening;
-  }
-}
+import 'package:weather_around_app/features/forecast/domain/entities/enums/period_day.dart';
 
 class CurrentWeatherCityEntity extends Equatable {
   final PeriodOfDay periodOfDay;

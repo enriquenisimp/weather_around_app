@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:weather_around_app/core/data/constants/common_constants.dart';
 import 'package:weather_around_app/core/presentation/theme/theme_constants.dart';
 import 'package:weather_around_app/core/presentation/theme/theme_utils.dart';
-import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_city_entity.dart';
+import 'package:weather_around_app/features/forecast/domain/entities/forecast_detail/forecast_detail_hour.dart';
 
 class ForecastDetailCityCard extends StatelessWidget {
   const ForecastDetailCityCard({

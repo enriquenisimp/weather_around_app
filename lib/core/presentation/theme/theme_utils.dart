@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_around_app/features/forecast/domain/entities/forecast_card/current_weather_city_entity.dart';
+import 'package:weather_around_app/features/forecast/domain/entities/enums/period_day.dart';
 
 class ThemeUtils {
   static Color chooseColor(PeriodOfDay periodOfDay) {
